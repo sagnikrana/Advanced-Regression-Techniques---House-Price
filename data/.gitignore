@@ -1,6 +1,6 @@
 # CSV and TXT
-.txt
-.csv
+*.txt
+*.csv
 
 # Environments
 .env
