@@ -1,0 +1,32 @@
+# Set of operations on test data
+
+data = pd.read_csv('data/train.csv')
+
+continuous_column = []
+categorical_column = []
+
+for index, row in data_dist.iterrows():
+    if (row['unique_terms']) <= 16:
+        categorical_column.append(data_dist['column'].iloc[index])
+    else:
+        continuous_column.append(data_dist['column'].iloc[index])
+
+data.drop(columns='Id', inplace=True)
+
+cat_ft =['MiscFeature','Alley','Fence','FireplaceQu','GarageCond','GarageType','GarageFinish','GarageQual',
+        'BsmtExposure','BsmtFinType2','BsmtFinType1','BsmtCond','BsmtQual','MasVnrType','Electrical','PoolQC']
+
+for ft in cat_ft:
+    data[ft].fillna('Other',inplace=True)
+
+
+data['GarageYrBlt'].fillna(0,inplace=True)
+data['MasVnrArea'].fillna(0,inplace=True)
+data['LotFrontage']= data.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.median()))
+
+data_dummy = dummies(data)
+
+data=data.drop(columns=object_features,axis=1)
+final_data = pd.concat([data,data_dummy],axis=1)
+
+
